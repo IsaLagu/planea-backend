@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -27,9 +28,6 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, name = "is_super_admin")
-    private Boolean isSuperAdmin;
-
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
     private Date createdAt;
@@ -38,18 +36,16 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    // Relationship with Company entity
-    @ManyToOne
-    @JoinColumn(name = "company_id", nullable = false)
-    private Company company;
+    @Column(name = "role")
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
-    public String getPassword() {
-        return password;
+    public boolean isSuperAdmin() {
+        return role == Role.ROLE_SUPER_ADMIN;
     }
 
     @Override
@@ -93,24 +89,37 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public Boolean getIsSuperAdmin() {
-        return isSuperAdmin;
+    public Role getRole() {
+        return role;
     }
 
-    public void setIsSuperAdmin(Boolean isSuperAdmin) {
-        this.isSuperAdmin = isSuperAdmin;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
-    public Company getCompany() {
-        return company;
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
+    public User setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+        return this;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public User setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
 }
