@@ -26,10 +26,15 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto) {
+    public ResponseEntity<LoginResponse> register(@RequestBody RegisterUserDto registerUserDto) {
         User registeredUser = authenticationService.signup(registerUserDto);
 
-        return ResponseEntity.ok(registeredUser);
+        String jwtToken = jwtService.generateToken(registeredUser);
+
+        LoginResponse signupResponse = new LoginResponse();
+        signupResponse.setToken(jwtToken);
+
+        return ResponseEntity.ok(signupResponse);
     }
 
     @PostMapping("/login")
@@ -40,7 +45,6 @@ public class AuthenticationController {
 
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(jwtToken);
-        loginResponse.setExpiresIn(jwtService.getExpirationTime());
 
         return ResponseEntity.ok(loginResponse);
     }
