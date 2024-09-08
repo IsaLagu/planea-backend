@@ -2,9 +2,17 @@ package com.planea.planea_backend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import com.planea.planea_backend.dtos.EventDto;
+import com.planea.planea_backend.entities.Category;
+import com.planea.planea_backend.entities.City;
 import com.planea.planea_backend.entities.Event;
+import com.planea.planea_backend.entities.User;
+import com.planea.planea_backend.services.CategoryService;
+import com.planea.planea_backend.services.CityService;
 import com.planea.planea_backend.services.EventService;
 
 import java.util.List;
@@ -16,6 +24,12 @@ public class EventController {
 
     @Autowired
     private EventService eventService;
+
+    @Autowired
+    private CityService cityService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @GetMapping
     public List<Event> getAllEvents() {
@@ -29,24 +43,74 @@ public class EventController {
     }
 
     @PostMapping
-    public Event createEvent(@RequestBody Event event) {
-        return eventService.save(event);
+    public ResponseEntity<Event> createEvent(
+            @RequestBody EventDto eventDto) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Event event = new Event();
+
+            event.setTitle(eventDto.getTitle());
+            event.setDescription(eventDto.getDescription());
+            event.setLocation(eventDto.getLocation());
+            event.setDate(eventDto.getDate());
+            event.setStartTime(eventDto.getStartTime());
+            event.setEndTime(eventDto.getEndTime());
+            event.setImageUrl(eventDto.getImageUrl());
+            event.setPrice(eventDto.getPrice());
+            event.setCapacity(eventDto.getCapacity());
+
+            User currentUser = (User) authentication.getPrincipal();
+            event.setUser(currentUser);
+
+            City city = cityService.findById(eventDto.getCityId())
+                    .orElseThrow(() -> new RuntimeException("City not found with id: " + eventDto.getCityId()));
+            event.setCity(city);
+
+            List<Category> categories = categoryService.findByIds(eventDto.getCategoryIds());
+            event.setCategories(categories);
+
+            Event savedEvent = eventService.save(event);
+            return ResponseEntity.ok(savedEvent);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(null); // Aquí puedes personalizar el mensaje de error
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Event> updateEvent(@PathVariable Integer id, @RequestBody Event eventDetails) {
+    public ResponseEntity<Event> updateEvent(
+            @PathVariable Integer id,
+            @RequestBody EventDto eventDto) {
         Optional<Event> eventOptional = eventService.findById(id);
+
         if (eventOptional.isPresent()) {
-            Event event = eventOptional.get();
-            event.setTitle(eventDetails.getTitle());
-            event.setDate(eventDetails.getDate());
-            event.setImageUrl(eventDetails.getImageUrl());
-            event.setLocation(eventDetails.getLocation());
-            event.setDescription(eventDetails.getDescription());
-            event.setIsActive(eventDetails.getIsActive());
-            event.setUserId(eventDetails.getUserId());
-            Event updatedEvent = eventService.save(event);
-            return ResponseEntity.ok(updatedEvent);
+            try {
+                Event event = eventOptional.get();
+
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                event.setTitle(eventDto.getTitle());
+                event.setDescription(eventDto.getDescription());
+                event.setLocation(eventDto.getLocation());
+                event.setDate(eventDto.getDate());
+                event.setStartTime(eventDto.getStartTime());
+                event.setEndTime(eventDto.getEndTime());
+                event.setImageUrl(eventDto.getImageUrl());
+                event.setPrice(eventDto.getPrice());
+                event.setCapacity(eventDto.getCapacity());
+
+                User currentUser = (User) authentication.getPrincipal();
+                event.setUser(currentUser);
+
+                City city = cityService.findById(eventDto.getCityId())
+                        .orElseThrow(() -> new RuntimeException("City not found with id: " + eventDto.getCityId()));
+                event.setCity(city);
+
+                List<Category> categories = categoryService.findByIds(eventDto.getCategoryIds());
+                event.setCategories(categories);
+                Event updatedEvent = eventService.save(event);
+                return ResponseEntity.ok(updatedEvent);
+            } catch (RuntimeException e) {
+                return ResponseEntity.badRequest().body(null); // Manejo de error si la ciudad/categorías no son válidas
+            }
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -54,6 +118,7 @@ public class EventController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEvent(@PathVariable Integer id) {
+        // TODO: check if the event belongs to the logged in user
         eventService.deleteById(id);
         return ResponseEntity.noContent().build();
     }

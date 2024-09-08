@@ -7,13 +7,19 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import java.util.Date;
 
+import java.math.BigDecimal;
+import java.time.LocalTime;
+import java.util.Date;
+import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -28,19 +34,31 @@ public class Event {
     @Column(name = "title", length = 50, nullable = false)
     private String title;
 
+    @Column(name = "description", length = 80)
+    private String description;
+
+    @Lob
+    @Column(name = "location", nullable = false)
+    private String location;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "date", nullable = false)
     private Date date;
 
+    @Column(name = "start_time")
+    private LocalTime startTime;
+
+    @Column(name = "end_time")
+    private LocalTime endTime;
+
     @Column(name = "image_url", length = 255)
     private String imageUrl;
 
-    @Lob
-    @Column(name = "location")
-    private String location;
+    @Column(name = "price", precision = 10, scale = 2)
+    private BigDecimal price;
 
-    @Column(name = "description", length = 500)
-    private String description;
+    @Column(name = "capacity")
+    private Integer capacity;
 
     @Column(name = "is_active")
     private Boolean isActive;
@@ -56,6 +74,14 @@ public class Event {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToOne
+    @JoinColumn(name = "city_id", referencedColumnName = "id", unique = true)
+    private City city;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "events_categories", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private List<Category> categories;
 
     public Integer getId() {
         return id;
@@ -73,20 +99,12 @@ public class Event {
         this.title = title;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getLocation() {
@@ -97,12 +115,52 @@ public class Event {
         this.location = location;
     }
 
-    public String getDescription() {
-        return description;
+    public Date getDate() {
+        return date;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
     }
 
     public Boolean getIsActive() {
@@ -113,22 +171,12 @@ public class Event {
         this.isActive = isActive;
     }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public Event setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-        return this;
-    }
-
     public Date getCreatedAt() {
         return createdAt;
     }
 
-    public Event setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-        return this;
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
     public User getUser() {
@@ -138,4 +186,21 @@ public class Event {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
 }
