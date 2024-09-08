@@ -1,8 +1,7 @@
 package com.planea.planea_backend.dtos;
 
 import java.math.BigDecimal;
-import java.time.LocalTime;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public class EventDto {
@@ -10,9 +9,8 @@ public class EventDto {
     private String title;
     private String description;
     private String location;
-    private Date date;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private String imageUrl;
     private BigDecimal price;
     private Integer capacity;
@@ -43,28 +41,20 @@ public class EventDto {
         this.location = location;
     }
 
-    public Date getDate() {
-        return date;
+    public LocalDateTime getStartDate() {
+        return startDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
     }
 
-    public LocalTime getStartTime() {
-        return startTime;
+    public LocalDateTime getEndDate() {
+        return endDate;
     }
 
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public LocalTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
     }
 
     public String getImageUrl() {

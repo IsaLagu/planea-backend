@@ -52,9 +52,8 @@ public class EventController {
             event.setTitle(eventDto.getTitle());
             event.setDescription(eventDto.getDescription());
             event.setLocation(eventDto.getLocation());
-            event.setDate(eventDto.getDate());
-            event.setStartTime(eventDto.getStartTime());
-            event.setEndTime(eventDto.getEndTime());
+            event.setStartDate(eventDto.getStartDate());
+            event.setEndDate(eventDto.getEndDate());
             event.setImageUrl(eventDto.getImageUrl());
             event.setPrice(eventDto.getPrice());
             event.setCapacity(eventDto.getCapacity());
@@ -90,9 +89,8 @@ public class EventController {
                 event.setTitle(eventDto.getTitle());
                 event.setDescription(eventDto.getDescription());
                 event.setLocation(eventDto.getLocation());
-                event.setDate(eventDto.getDate());
-                event.setStartTime(eventDto.getStartTime());
-                event.setEndTime(eventDto.getEndTime());
+                event.setStartDate(eventDto.getStartDate());
+                event.setEndDate(eventDto.getEndDate());
                 event.setImageUrl(eventDto.getImageUrl());
                 event.setPrice(eventDto.getPrice());
                 event.setCapacity(eventDto.getCapacity());

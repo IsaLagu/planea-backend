@@ -9,6 +9,10 @@ import com.planea.planea_backend.repositories.EventRepository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service class that handles operations related to {@link Event}.
+ * This service provides methods to retrieve, save, and delete events.
+ */
 @Service
 public class EventService {
 
@@ -16,40 +20,39 @@ public class EventService {
     private EventRepository eventRepository;
 
     /**
-     * Get all the events
-     * 
-     * @return List of events
+     * Retrieves all events from the database.
+     *
+     * @return a list of all events.
      */
     public List<Event> findAll() {
         return eventRepository.findAll();
     }
 
     /**
-     * Search an event by ID
-     * 
-     * @param id
-     * @return Event if exists, or an Optional empty
+     * Retrieves an event by its ID.
+     *
+     * @param id the ID of the event to retrieve.
+     * @return an {@link Optional} containing the event if found, or an empty
+     *         Optional if not found.
      */
     public Optional<Event> findById(Integer id) {
         return eventRepository.findById(id);
     }
 
     /**
-     * Create or update an event
-     * 
-     * @param event       Event to save
-     * @param cityID      ID of the city related to the event
-     * @param categoryIds List of IDs from the associated categories
-     * @return The saved event
+     * Creates or updates an event in the database.
+     *
+     * @param event the event to be saved or updated.
+     * @return the saved or updated event.
      */
     public Event save(Event event) {
         return eventRepository.save(event);
     }
 
     /**
-     * Delete an event by ID
-     * 
-     * @param id ID of the event to delete
+     * Deletes an event by its ID.
+     *
+     * @param id the ID of the event to delete.
      */
     public void deleteById(Integer id) {
         eventRepository.deleteById(id);

@@ -15,7 +15,7 @@ public class City {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "name")
+    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
     private Set<Event> events;
 
     public Integer getId() {

@@ -13,11 +13,9 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 import java.math.BigDecimal;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
@@ -41,15 +39,11 @@ public class Event {
     @Column(name = "location", nullable = false)
     private String location;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "date", nullable = false)
-    private Date date;
+    @Column(name = "start_date", nullable = false)
+    private LocalDateTime startDate;
 
-    @Column(name = "start_time")
-    private LocalTime startTime;
-
-    @Column(name = "end_time")
-    private LocalTime endTime;
+    @Column(name = "end_date")
+    private LocalDateTime endDate;
 
     @Column(name = "image_url", length = 255)
     private String imageUrl;
@@ -115,28 +109,20 @@ public class Event {
         this.location = location;
     }
 
-    public Date getDate() {
-        return date;
+    public LocalDateTime getStartDate() {
+        return startDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
     }
 
-    public LocalTime getStartTime() {
-        return startTime;
+    public LocalDateTime getEndDate() {
+        return endDate;
     }
 
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public LocalTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
     }
 
     public String getImageUrl() {

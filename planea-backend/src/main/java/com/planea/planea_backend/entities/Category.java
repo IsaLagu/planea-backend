@@ -11,10 +11,10 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "category", nullable = false)
-    private String category;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     private Set<Event> events;
 
     public Integer getId() {
@@ -25,12 +25,12 @@ public class Category {
         this.id = id;
     }
 
-    public String getCategory() {
-        return category;
+    public String getName() {
+        return name;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Set<Event> getEvents() {
