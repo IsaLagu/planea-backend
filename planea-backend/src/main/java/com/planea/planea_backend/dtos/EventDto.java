@@ -14,8 +14,8 @@ public class EventDto {
     private String imageUrl;
     private BigDecimal price;
     private Integer capacity;
-    private Integer cityId;
-    private Set<Integer> categoryIds;
+    private String cityId;
+    private Set<String> categoryIds;
 
     public String getTitle() {
         return title;
@@ -81,19 +81,19 @@ public class EventDto {
         this.capacity = capacity;
     }
 
-    public Integer getCityId() {
+    public String getCityId() {
         return cityId;
     }
 
-    public void setCityId(Integer cityId) {
+    public void setCityId(String cityId) {
         this.cityId = cityId;
     }
 
-    public Set<Integer> getCategoryIds() {
+    public Set<String> getCategoryIds() {
         return categoryIds;
     }
 
-    public void setCategoryIds(Set<Integer> categoryIds) {
+    public void setCategoryIds(Set<String> categoryIds) {
         this.categoryIds = categoryIds;
     }
 }

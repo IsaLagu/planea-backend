@@ -35,7 +35,7 @@ public class CategoryService {
      * @return an {@link Optional} containing the category if found, or an empty
      *         Optional if not found.
      */
-    public Optional<Category> findById(Integer id) {
+    public Optional<Category> findById(String id) {
         return categoryRepository.findById(id);
     }
 
@@ -45,7 +45,7 @@ public class CategoryService {
      * @param ids the set of category IDs to retrieve.
      * @return a list of categories that match the provided IDs.
      */
-    public List<Category> findByIds(Set<Integer> ids) {
+    public List<Category> findByIds(Set<String> ids) {
         return categoryRepository.findAllById(ids);
     }
 
@@ -64,7 +64,7 @@ public class CategoryService {
      *
      * @param id the ID of the category to delete.
      */
-    public void deleteById(Integer id) {
+    public void deleteById(String id) {
         categoryRepository.deleteById(id);
     }
 }

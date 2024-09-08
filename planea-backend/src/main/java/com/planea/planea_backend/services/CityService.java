@@ -34,7 +34,7 @@ public class CityService {
      * @return an {@link Optional} containing the city if found, or an empty
      *         Optional if not found.
      */
-    public Optional<City> findById(Integer id) {
+    public Optional<City> findById(String id) {
         return cityRepository.findById(id);
     }
 
@@ -53,7 +53,7 @@ public class CityService {
      *
      * @param id the ID of the city to delete.
      */
-    public void deleteById(Integer id) {
+    public void deleteById(String id) {
         cityRepository.deleteById(id);
     }
 }
