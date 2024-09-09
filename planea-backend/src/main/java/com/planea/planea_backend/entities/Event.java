@@ -65,15 +65,15 @@ public class Event {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @OneToOne
-    @JoinColumn(name = "city_id", referencedColumnName = "id", unique = true)
+    @JoinColumn(name = "city_id", referencedColumnName = "id")
     private City city;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "events_categories", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories;
 

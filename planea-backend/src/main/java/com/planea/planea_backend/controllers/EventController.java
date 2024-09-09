@@ -57,6 +57,7 @@ public class EventController {
             event.setImageUrl(eventDto.getImageUrl());
             event.setPrice(eventDto.getPrice());
             event.setCapacity(eventDto.getCapacity());
+            event.setIsActive(true);
 
             User currentUser = (User) authentication.getPrincipal();
             event.setUser(currentUser);
