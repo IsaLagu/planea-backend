@@ -1,5 +1,6 @@
 package com.planea.planea_backend.services;
 
+import com.planea.planea_backend.dtos.CategoryDto;
 import com.planea.planea_backend.entities.Category;
 import com.planea.planea_backend.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Service class that manages operations related to {@link Category}.
@@ -24,8 +26,9 @@ public class CategoryService {
      *
      * @return a list of all categories.
      */
-    public List<Category> findAll() {
-        return categoryRepository.findAll();
+    public List<CategoryDto> findAll() {
+        return categoryRepository.findAll().stream()
+                .map(category -> new CategoryDto(category.getId(), category.getName())).collect(Collectors.toList());
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.planea.planea_backend.controllers;
 
-import com.planea.planea_backend.entities.City;
+import com.planea.planea_backend.dtos.CityDto;
 import com.planea.planea_backend.services.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ public class CityController {
     private CityService cityService;
 
     @GetMapping
-    public List<City> getAllCities() {
+    public List<CityDto> getAllCities() {
         return cityService.findAll();
     }
 }

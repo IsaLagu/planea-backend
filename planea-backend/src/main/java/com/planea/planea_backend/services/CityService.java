@@ -1,5 +1,6 @@
 package com.planea.planea_backend.services;
 
+import com.planea.planea_backend.dtos.CityDto;
 import com.planea.planea_backend.entities.City;
 import com.planea.planea_backend.repositories.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Service class that handles operations related to {@link City}.
@@ -23,8 +25,9 @@ public class CityService {
      *
      * @return a list of all cities.
      */
-    public List<City> findAll() {
-        return cityRepository.findAll();
+    public List<CityDto> findAll() {
+        return cityRepository.findAll().stream().map(city -> new CityDto(city.getId(), city.getName()))
+                .collect(Collectors.toList());
     }
 
     /**

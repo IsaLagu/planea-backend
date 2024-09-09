@@ -1,6 +1,6 @@
 package com.planea.planea_backend.controllers;
 
-import com.planea.planea_backend.entities.Category;
+import com.planea.planea_backend.dtos.CategoryDto;
 import com.planea.planea_backend.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping
-    public List<Category> getAllCategories() {
+    public List<CategoryDto> getAllCategories() {
         return categoryService.findAll();
     }
 }
