@@ -4,7 +4,7 @@ public class CategoryDto {
     private String id;
     private String name;
 
-    public CategoryDto() {
+    public CategoryDto(String string, String string2) {
     }
 
     public String getId() {
