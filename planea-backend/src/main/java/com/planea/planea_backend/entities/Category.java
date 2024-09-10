@@ -3,6 +3,8 @@ package com.planea.planea_backend.entities;
 import jakarta.persistence.*;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "categories")
 public class Category {
@@ -15,6 +17,7 @@ public class Category {
     private String name;
 
     @ManyToMany(mappedBy = "categories", fetch = FetchType.EAGER)
+    @JsonIgnore
     private Set<Event> events;
 
     public String getId() {

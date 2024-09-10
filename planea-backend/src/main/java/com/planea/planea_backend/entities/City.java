@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "cities")
 public class City {
@@ -16,6 +18,7 @@ public class City {
     private String name;
 
     @OneToMany(mappedBy = "city", fetch = FetchType.EAGER)
+    @JsonIgnore
     private Set<Event> events;
 
     public String getId() {
