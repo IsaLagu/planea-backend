@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 
 import com.planea.planea_backend.dtos.EventDto;
 import com.planea.planea_backend.entities.Category;
@@ -136,9 +137,24 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEvent(@PathVariable Integer id) {
-        // TODO: check if the event belongs to the logged in user
-        eventService.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Optional<Event>> deleteEvent(@PathVariable Integer id) {
+        Optional<Event> eventOptional = eventService.findById(id);
+
+        if (eventOptional.isPresent()) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = (User) authentication.getPrincipal();
+            String userEmail = currentUser.getUsername();
+            Optional<User> currentUserOptional = userRepository.findByEmail(userEmail);
+
+            if (currentUserOptional.isPresent()
+                    && currentUserOptional.get().getId().equals(eventOptional.get().getUser().getId())) {
+                eventService.deleteById(id);
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }
