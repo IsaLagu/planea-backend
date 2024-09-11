@@ -32,7 +32,7 @@ public class Event {
     @Column(name = "title", length = 50, nullable = false)
     private String title;
 
-    @Column(name = "description", length = 80)
+    @Column(name = "description", length = 250)
     private String description;
 
     @Lob
