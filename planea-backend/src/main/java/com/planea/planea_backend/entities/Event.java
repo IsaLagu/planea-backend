@@ -21,6 +21,8 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "events")
 public class Event {
@@ -35,7 +37,6 @@ public class Event {
     @Column(name = "description", length = 250)
     private String description;
 
-    @Lob
     @Column(name = "location", nullable = false)
     private String location;
 

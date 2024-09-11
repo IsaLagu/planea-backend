@@ -11,6 +11,7 @@ import com.planea.planea_backend.entities.Category;
 import com.planea.planea_backend.entities.City;
 import com.planea.planea_backend.entities.Event;
 import com.planea.planea_backend.entities.User;
+import com.planea.planea_backend.repositories.UserRepository;
 import com.planea.planea_backend.services.CategoryService;
 import com.planea.planea_backend.services.CityService;
 import com.planea.planea_backend.services.EventService;
@@ -30,6 +31,25 @@ public class EventController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @GetMapping("/user")
+    public ResponseEntity<List<Event>> getAllUserEvents() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+        String userEmail = currentUser.getUsername();
+        Optional<User> currentUserOptional = userRepository.findByEmail(userEmail);
+
+        if (!currentUserOptional.isPresent()) {
+            return ResponseEntity.status(403).build();
+        }
+
+        List<Event> events = eventService.findAllByUserId(currentUserOptional.get().getId());
+
+        return ResponseEntity.ok(events);
+    }
 
     @GetMapping
     public List<Event> getAllEvents() {

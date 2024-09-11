@@ -40,6 +40,17 @@ public class EventService {
     }
 
     /**
+     * Retrieves all events of a user.
+     *
+     * @param userId the ID of the user.
+     * @return an {@link Optional} containing the event if found, or an empty
+     *         Optional if not found.
+     */
+    public List<Event> findAllByUserId(Integer userId) {
+        return eventRepository.findAllByUserId(userId);
+    }
+
+    /**
      * Creates or updates an event in the database.
      *
      * @param event the event to be saved or updated.
